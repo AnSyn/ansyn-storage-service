@@ -22,7 +22,7 @@ class ElasticsearchBackend {
                 type: schema,
                 id: id,
                 body: doc
-            }).then (data => resolve(data, err => reject(err)));
+            }).then (data => resolve(data), err => reject(err));
         });
     }
 
@@ -57,7 +57,7 @@ class ElasticsearchBackend {
                 type: schema,
                 from: offset,
                 size: size
-            }).then(data => resolve(data.hits.hits.map(hits => hit._source)), err => reject(err));
+            }).then(data => resolve(data.hits.hits.map(hit => hit._source)), err => reject(err));
         });
     }
 
@@ -67,7 +67,7 @@ class ElasticsearchBackend {
                 index: schema,
                 type: schema,
                 id: id
-            }).then(data => resolve(data, err => reject(err)));
+            }).then(data => resolve(data), err => reject(err));
         });
     }
 
@@ -75,7 +75,7 @@ class ElasticsearchBackend {
         return new Promise((resolve, reject) => {
             this.client.indices.delete({
                 index: schema,
-            }).then(data => resolve(data, err => reject(err)));
+            }).then(data => resolve(data), err => reject(err));
         });
     }
 
@@ -88,7 +88,7 @@ class ElasticsearchBackend {
                 body: {
                     doc: doc
                 }
-            }).then (data => resolve(data, err => reject(err)));
+            }).then (data => resolve(data), err => reject(err));
         });
     }
 
@@ -96,7 +96,7 @@ class ElasticsearchBackend {
         return new Promise((resolve, reject) => {
             this.client.indices.delete({
                 index: `${config.backend.schemaPrefix}*`,
-            }).then (data => resolve(data, err => reject(err)));
+            }).then (data => resolve(data), err => reject(err));
         });
     }
 }
