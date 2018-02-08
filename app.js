@@ -6,13 +6,25 @@ const controllers = require('./src/controllers');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-const app = new express();
+class Server {
+  constructor() {
+    this.app = new express();
 
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(new controllers().getRouter());
+    this.app.use(cors());
+    this.app.use(bodyParser.json());
+    this.app.use(bodyParser.urlencoded({extended: true}));
+    this.app.use(new controllers().getRouter());
+  }
 
-app.listen(config.port, () => console.log(`Server listening on port ${config.port}`));
+  run() {
+    this.server = this.app.listen(config.port, () => console.log(`Server listening on port ${config.port}`));
+  }
+
+  stop() {
+    this.server.close();
+  }
+}
+
+module.exports = Server;
 
 

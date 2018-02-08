@@ -2,9 +2,10 @@
   "name": "storage-service",
   "version": "0.8.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test-init": "node ./node_modules/jasmine/bin/jasmine.js init",
+    "test": "node ./node_modules/jasmine/bin/jasmine.js"
   },
   "repository": "https://github.com/ansyn/ansyn-storage-service",
   "author": "",
@@ -14,5 +15,9 @@
     "cors": "^2.8.4",
     "elasticsearch": "^14.1.0",
     "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "jasmine": "^3.0.0",
+    "request": "^2.83.0"
   }
 }

@@ -16,7 +16,7 @@ class StoreRouter {
         return `${this.schemaPrefix}${schema}`;
     }
 
-    _getDocumentByIdHandler(req, res) {
+    _getDocumentById(req, res) {
       const schema = req.params.schema;
       const id = req.params.id;
 
@@ -28,8 +28,8 @@ class StoreRouter {
 
     _getPage(req, res) {
       const schema = req.params.schema;
-      const from = req.query.from || 0;
-      const size = req.query.limit || 10;
+      const from = req.query.from || '0';
+      const size = req.query.limit || '10';
 
       this.backend.getPage(this._getPrefixedSchema(schema), from, size)
         .then(data => res.json(data))
@@ -95,7 +95,7 @@ class StoreRouter {
     }
 
     _initRouter() {
-      this.router.get('/:schema/:id', (req, res) => this._getDocumentByIdHandler(req, res));
+      this.router.get('/:schema/:id', (req, res) => this._getDocumentById(req, res));
       this.router.get('/:schema', (req, res) => this._getPage(req, res));
       this.router.post('/:schema/:id', (req, res) => this._createDocument(req, res));
       this.router.post('/:schema', (req, res) => this._createSchema(req, res));
