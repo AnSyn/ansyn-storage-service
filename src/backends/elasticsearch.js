@@ -29,7 +29,12 @@ class ElasticsearchBackend {
     createSchema(schema) {
         return new Promise((resolve, reject) => {
             const mappings = {};
-            mappings[schema] = { enabled : false };
+            mappings[schema] = {
+                properties: {
+                    creationTime: {type: 'date'},
+                    '*': {enabled: false}
+                }
+            };
 
             this.client.indices.create({
                 index: schema,
@@ -56,7 +61,8 @@ class ElasticsearchBackend {
                 index: schema,
                 type: schema,
                 from: offset,
-                size: size
+                size: size,
+                sort: 'creationTime:desc'
             }).then(data => resolve(data.hits.hits.map(hit => hit._source)), err => reject(err));
         });
     }
