@@ -21,8 +21,9 @@ class ElasticsearchBackend {
                 index: schema,
                 type: schema,
                 id: id,
-                body: doc
-            }).then (data => resolve(data), err => reject(err));
+                body: doc,
+                refresh: 'true'
+            }).then(data => resolve(data), err => reject(err));
         });
     }
 
@@ -72,7 +73,8 @@ class ElasticsearchBackend {
             this.client.delete({
                 index: schema,
                 type: schema,
-                id: id
+                id: id,
+                refresh: 'true'
             }).then(data => resolve(data), err => reject(err));
         });
     }
