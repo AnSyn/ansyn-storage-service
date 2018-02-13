@@ -80,7 +80,7 @@ class ElasticsearchBackend {
     deleteSchema(schema) {
         return new Promise((resolve, reject) => {
             this.client.indices.delete({
-                index: schema,
+                index: schema
             }).then(data => resolve(data), err => reject(err));
         });
     }
@@ -93,16 +93,17 @@ class ElasticsearchBackend {
                 id: id,
                 body: {
                     doc: doc
-                }
-            }).then (data => resolve(data), err => reject(err));
+                },
+                refresh: 'wait_for'
+            }).then(data => resolve(data), err => reject(err));
         });
     }
 
     flushAll() {
         return new Promise((resolve, reject) => {
             this.client.indices.delete({
-                index: `${config.backend.schemaPrefix}*`,
-            }).then (data => resolve(data), err => reject(err));
+                index: `${config.backend.schemaPrefix}*`
+            }).then(data => resolve(data), err => reject(err));
         });
     }
 }
