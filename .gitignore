@@ -64,3 +64,6 @@ typings/
 
 # JetBrains files
 .idea/
+
+# Jasmine files
+spec/support/
