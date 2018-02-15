@@ -14,4 +14,7 @@ This service exposes CRUD API for document storage in a backend, currently suppo
 
 # Getting Started
 
-Running the service locally requires a running elasticsearch instance. In addition, for Ansyn to work correctly, 3 schemas should be created: layers, cases and contexts, using the following command: `curl -XPOST http://localhost:8080/api/store/<layer>`.
+Running the service locally requires a running elasticsearch instance. In addition, for Ansyn to work correctly, 3 schemas should be created: layers, cases and contexts, using the following commands: 
+- `curl -XPOST http://localhost:8080/api/store/layers`
+- `curl -XPOST http://localhost:8080/api/store/cases`
+- `curl -XPOST http://localhost:8080/api/store/contexts`
