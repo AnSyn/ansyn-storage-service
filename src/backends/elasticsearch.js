@@ -10,8 +10,7 @@ class ElasticsearchBackend {
         });
 
         this.client = new elastic.Client({
-            hosts: hosts,
-            sniffOnStart: true
+            hosts: hosts
         });
     }
 
