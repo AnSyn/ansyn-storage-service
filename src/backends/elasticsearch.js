@@ -21,7 +21,7 @@ class ElasticsearchBackend {
                 index: schema,
                 type: schema,
                 id: id,
-                body: doc,
+                body: {src: doc, creationTime: doc.creationTime},
                 refresh: 'true'
             }).then(data => resolve(data), err => reject(err));
         });
@@ -33,7 +33,7 @@ class ElasticsearchBackend {
             mappings[schema] = {
                 properties: {
                     creationTime: {type: 'date'},
-                    '*': {enabled: false}
+                    src: {enabled: false}
                 }
             };
 
@@ -52,7 +52,7 @@ class ElasticsearchBackend {
                 index: schema,
                 type: schema,
                 id: id
-            }).then(data => resolve(data._source), err => reject(err));
+            }).then(data => resolve(data._source.src), err => reject(err));
         });
     }
 
@@ -64,7 +64,7 @@ class ElasticsearchBackend {
                 from: offset,
                 size: size,
                 sort: 'creationTime:desc'
-            }).then(data => resolve(data.hits.hits.map(hit => hit._source)), err => reject(err));
+            }).then(data => resolve(data.hits.hits.map(hit => hit._source.src)), err => reject(err));
         });
     }
 
@@ -94,7 +94,7 @@ class ElasticsearchBackend {
                 type: schema,
                 id: id,
                 body: {
-                    doc: doc
+                    doc: {src: doc}
                 },
                 refresh: 'wait_for'
             }).then(data => resolve(data), err => reject(err));
