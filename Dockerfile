@@ -7,4 +7,4 @@ COPY . .
 RUN npm cache clean --force
 RUN npm install
 
-ENTRYPOINT node app.js
+ENTRYPOINT node index.js
