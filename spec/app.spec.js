@@ -19,7 +19,7 @@ describe("Server", () => {
       expect(data.status).toBe(200);
     });
     it("Body", () => {
-      expect(data.body.name).toBe('storage-service');
+      expect(data.body.name).toBe('ansyn-storage-service');
     });
   });
 
