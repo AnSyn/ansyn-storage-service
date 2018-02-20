@@ -25,7 +25,6 @@ before_deploy:
   - docker --version
   - pip install --user awscli # install aws cli w/o sudo
   - export PATH=$PATH:$HOME/.local/bin # put aws in the path
-  - mv e2e/REPORTS dist/REPORTS # Add reports to dist
 
 deploy:
   - provider: script
@@ -40,7 +39,7 @@ deploy:
       tags: true
 
 after_deploy:
-  - node scripts/kill-tasks.js
+  - node scripts/kill-tasks.js ansyn-storage-service
 
 notifications:
   email: false
