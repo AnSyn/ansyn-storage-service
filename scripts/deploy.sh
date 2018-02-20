@@ -16,6 +16,14 @@ then
 	exit 1
 fi
 
+service=$3
+echo "service $service"
+if [ -z "$service" ]
+then
+    echo "Missing ECS service name"
+    exit 1
+fi
+
 echo "start deploying version $version on target $target"
 
 # Login to the Docker registry
@@ -31,3 +39,6 @@ docker push "223455578796.dkr.ecr.us-west-2.amazonaws.com/$target:latest"
 docker push "223455578796.dkr.ecr.us-west-2.amazonaws.com/$target:$version"
 
 echo "deployment succeeded";
+
+node scripts/kill-tasks.js $service
+

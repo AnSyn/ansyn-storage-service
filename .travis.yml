@@ -28,18 +28,15 @@ before_deploy:
 
 deploy:
   - provider: script
-    script: sh -x scripts/deploy.sh ansyn/storage-service $TRAVIS_COMMIT
+    script: sh -x scripts/deploy.sh ansyn/storage-service $TRAVIS_COMMIT ansyn-storage-service
     skip_cleanup: true
     on:
       branch: master
   - provider: script
-    script: sh -x scripts/deploy.sh ansyn/storage-service-prod $TRAVIS_TAG
+    script: sh -x scripts/deploy.sh ansyn/storage-service-prod $TRAVIS_TAG ansyn-storage-service-prod
     skip_cleanup: true
     on:
       tags: true
-
-after_deploy:
-  - node scripts/kill-tasks.js ansyn-storage-service
 
 notifications:
   email: false
