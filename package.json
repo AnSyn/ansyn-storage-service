@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test-init": "node ./node_modules/jasmine/bin/jasmine.js init",
-    "test": "node ./node_modules/jasmine/bin/jasmine.js"
+    "test": "node ./node_modules/jasmine/bin/jasmine.js",
+    "log": "git log master --pretty=format:\\\"%an\\\",\\\"%ai\\\",\\\"%s\\\",\\\"%H\\\" > log.csv && echo Commiter, Date, Message, Hash | cat - log.csv > log2.csv && mv log2.csv log.csv"
   },
   "repository": "https://github.com/ansyn/ansyn-storage-service",
   "author": "",
