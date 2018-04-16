@@ -20,7 +20,7 @@ class ElasticsearchBackend {
                 index: schema,
                 type: schema,
                 id: id,
-                body: {data: doc.data, preview: doc.preview, creationTime: doc.creationTime},
+                body: {data: doc.data, preview: doc.preview, creationTime: doc.preview.creationTime},
                 refresh: 'true'
             }).then(data => resolve(data), err => reject(err));
         });
