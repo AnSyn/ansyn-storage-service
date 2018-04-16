@@ -67,3 +67,6 @@ typings/
 
 # Jasmine files
 spec/support/
+
+# Commit log
+ansyn-storage-service.log.csv
