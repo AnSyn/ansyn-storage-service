@@ -94,7 +94,25 @@ class StoreRouter {
         );
     }
 
+    _searchDocuments(req, res) {
+      console.log("shai post", req.body.caseId);
+      this.backend.search(this._getPrefixedSchema(req.params.schema), req.body.caseId)
+        .then((response) => {
+          res.json(response)
+        })
+    }
+
+    _deleteSearch(req, res) {
+      this.backend.deleteSearch(this._getPrefixedSchema(req.params.schema), req.body.caseId)
+        .then((response) => {
+          res.json(response)
+        })
+    }
+
     _initRouter() {
+      this.router.post('/:schema/search', (req, res) => this._searchDocuments(req, res));
+      this.router.post('/:schema/delete_search', (req, res) => this._deleteSearch(req, res));
+
       this.router.get('/:schema/:id', (req, res) => this._getDocumentById(req, res));
       this.router.get('/:schema', (req, res) => this._getPage(req, res));
       this.router.post('/:schema/:id', (req, res) => this._createDocument(req, res));
@@ -103,6 +121,7 @@ class StoreRouter {
       this.router.delete('/:schema/:id', (req, res) => this._deleteDocument(req, res));
       this.router.delete('/:schema', (req, res) => this._deleteSchema(req, res));
       this.router.delete('/', (req, res) => this._flushAll(req, res));
+
     }
 
     _handleError(err, res) {

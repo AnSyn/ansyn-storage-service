@@ -56,7 +56,7 @@ class ElasticsearchBackend {
         });
     }
 
-    getPage(schema, offset, size) {
+    getPage(schema, offset = 0, size = 100) {
         return new Promise((resolve, reject) => {
             this.client.search({
                 index: schema,
@@ -106,6 +106,23 @@ class ElasticsearchBackend {
             this.client.indices.delete({
                 index: `${config.backend.schemaPrefix}*`
             }).then(data => resolve(data), err => reject(err));
+        });
+    }
+
+    search(schema, caseId) {
+        return this.getPage(schema).then((response) => {
+            return response.filter((layer) => !layer.caseId || layer.caseId === caseId)
+        });
+    }
+
+    deleteSearch(schema, caseId) {
+      return this.search(schema, caseId)
+        .then((response) => {
+            const ids = response
+              .filter((layer) => layer.caseId === caseId)
+              .map((layer) => layer.id);
+
+          return Promise.all(ids.map((id) => this.delete(schema, id))).then(() => ids);
         });
     }
 }
