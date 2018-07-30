@@ -116,7 +116,7 @@ class ElasticsearchBackend {
     }
 
     deleteByCase(schema, caseId) {
-      return this.search(schema, caseId)
+      return this.searchByCase(schema, caseId)
         .then((response) => {
             const ids = response
               .filter((layer) => layer.caseId === caseId)
