@@ -109,13 +109,13 @@ class ElasticsearchBackend {
         });
     }
 
-    search(schema, caseId) {
+   searchByCase(schema, caseId) {
         return this.getPage(schema).then((response) => {
             return response.filter((layer) => !layer.caseId || layer.caseId === caseId)
         });
     }
 
-    deleteSearch(schema, caseId) {
+    deleteByCase(schema, caseId) {
       return this.search(schema, caseId)
         .then((response) => {
             const ids = response

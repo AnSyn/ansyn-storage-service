@@ -94,24 +94,23 @@ class StoreRouter {
         );
     }
 
-    _searchDocuments(req, res) {
-      console.log("shai post", req.body.caseId);
-      this.backend.search(this._getPrefixedSchema(req.params.schema), req.body.caseId)
+    _searchByCase(req, res) {
+      this.backend.searchByCase(this._getPrefixedSchema(req.params.schema), req.body.caseId)
         .then((response) => {
           res.json(response)
         })
     }
 
-    _deleteSearch(req, res) {
-      this.backend.deleteSearch(this._getPrefixedSchema(req.params.schema), req.body.caseId)
+    _deleteByCase(req, res) {
+      this.backend.deleteByCase(this._getPrefixedSchema(req.params.schema), req.body.caseId)
         .then((response) => {
           res.json(response)
         })
     }
 
     _initRouter() {
-      this.router.post('/:schema/search', (req, res) => this._searchDocuments(req, res));
-      this.router.post('/:schema/delete_search', (req, res) => this._deleteSearch(req, res));
+      this.router.post('/:schema/search_by_case', (req, res) => this._searchByCase(req, res));
+      this.router.post('/:schema/delete_by_case', (req, res) => this._deleteByCase(req, res));
 
       this.router.get('/:schema/:id', (req, res) => this._getDocumentById(req, res));
       this.router.get('/:schema', (req, res) => this._getPage(req, res));
