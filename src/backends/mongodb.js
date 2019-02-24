@@ -2,8 +2,8 @@ const { MongoClient, ObjectId } = require('mongodb');
 const config = require('../../config');
 
 const mongoConfig = {
-    url: process.env.MONGO_URL || 'mongodb://ansyn.webiks.com:85',
-    db: process.env.MONGO_DB || 'ansyn',
+    url: process.env.MONGO_URL || 'mongodb://localhost:27017',
+    db: process.env.MONGO_DB || 'db',
 };
 
 
