@@ -49,7 +49,7 @@ class MongoDBBackend {
                 if (err) {
                     reject(err)
                 } else {
-                    resolve(this._changeIndexKey(data))
+                    resolve(data)
                 }
             });
         });
@@ -57,11 +57,11 @@ class MongoDBBackend {
 
     getPage(schema, offset = 0, size = 100) {
         return new Promise((resolve, reject) => {
-            this.db.collection(schema).find({}).skip(+offset).limit(+size).toArray((err, data) => {
+            this.db.collection(schema).find({}).project({ _id: 0, preview: 1 }).skip(+offset).limit(+size).toArray((err, data) => {
                 if (err) {
                     reject(err)
                 } else {
-                    resolve(data.map(this._changeIndexKey))
+                    resolve(data.map(({ preview }) => (preview)))
                 }
             });
         });
@@ -97,7 +97,7 @@ class MongoDBBackend {
                 if (err) {
                     reject(err)
                 } else {
-                    resolve(this._changeIndexKey(doc))
+                    resolve(doc)
                 }
             });
         });
@@ -115,19 +115,13 @@ class MongoDBBackend {
         });
     }
 
-    _changeIndexKey(data) {
-        const { _id, ...rest } = data;
-        return { id: _id, ...rest  };
-    }
-
-
     searchByCase(schema, caseId) {
         return new Promise((resolve, reject) => {
-            this.db.collection(schema).find({ $or: [{ caseId }, { caseId: undefined }] }).toArray((err, data) => {
+            this.db.collection(schema).find({ $or: [{ 'preview.caseId': caseId }, { 'preview.caseId': undefined }] }).toArray((err, data) => {
                 if (err) {
                     reject(err)
                 } else {
-                    resolve(data.map(this._changeIndexKey))
+                    resolve(data.map(({ preview}) => preview))
                 }
             });
         });
