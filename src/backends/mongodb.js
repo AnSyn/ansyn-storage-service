@@ -93,7 +93,7 @@ class MongoDBBackend {
 
     update(schema, id, doc) {
         return new Promise((resolve, reject) => {
-            this.db.collection(schema).updateOne({ _id: id }, { $set: doc }, { upsert: true }, (err, data) => {
+            this.db.collection(schema).updateOne({ _id: id }, { $set: doc }, (err, data) => {
                 if (err) {
                     reject(err)
                 } else {
