@@ -49,25 +49,24 @@ class MongoDBBackend {
                 if (err) {
                     reject(err)
                 } else {
-                    console.log(data)
-                    resolve({ ...data, id })
+                    resolve(this._changeIndexKey(data))
                 }
             });
         });
     }
 
-    // getPage(schema, offset = 0, size = 100) {
-    //     return new Promise((resolve, reject) => {
-    //         this.client.search({
-    //             index: schema,
-    //             type: schema,
-    //             from: offset,
-    //             size: size,
-    //             sort: 'creationTime:desc'
-    //         }).then(data => resolve(data.hits.hits.map(hit => hit._source.preview)), err => reject(err));
-    //     });
-    // }
-    //
+    getPage(schema, offset = 0, size = 100) {
+        return new Promise((resolve, reject) => {
+            this.db.collection(schema).find({}).skip(+offset).limit(+size).toArray((err, data) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(data.map(this._changeIndexKey))
+                }
+            });
+        });
+    }
+
     delete(schema, id) {
         return new Promise((resolve, reject) => {
             this.db.collection(schema).removeOne({ _id: id }, (err, data) => {
@@ -79,51 +78,71 @@ class MongoDBBackend {
             });
         });
     }
-    //
-    // deleteSchema(schema) {
-    //     return new Promise((resolve, reject) => {
-    //         this.client.indices.delete({
-    //             index: schema
-    //         }).then(data => resolve(data), err => reject(err));
-    //     });
-    // }
-    //
-    update(schema, id, doc) {
+
+    deleteSchema(schema) {
         return new Promise((resolve, reject) => {
-            this.db.collection(schema).updateOne({ _id: id }, doc, (err, data) => {
+            this.db.collection(schema).drop((err, data) => {
                 if (err) {
                     reject(err)
                 } else {
-                    resolve(id)
+                    resolve(data)
                 }
             });
         });
     }
-    //
-    // flushAll() {
-    //     return new Promise((resolve, reject) => {
-    //         this.client.indices.delete({
-    //             index: `${config.backend.schemaPrefix}*`
-    //         }).then(data => resolve(data), err => reject(err));
-    //     });
-    // }
-    //
-    // searchByCase(schema, caseId) {
-    //     return this.getPage(schema).then((response) => {
-    //         return response.filter((layer) => !layer.caseId || layer.caseId === caseId)
-    //     });
-    // }
-    //
-    // deleteByCase(schema, caseId) {
-    //     return this.searchByCase(schema, caseId)
-    //         .then((response) => {
-    //             const ids = response
-    //                 .filter((layer) => layer.caseId === caseId)
-    //                 .map((layer) => layer.id);
-    //
-    //             return Promise.all(ids.map((id) => this.delete(schema, id))).then(() => ids);
-    //         });
-    // }
+
+    update(schema, id, doc) {
+        return new Promise((resolve, reject) => {
+            this.db.collection(schema).updateOne({ _id: id }, { $set: doc }, { upsert: true }, (err, data) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(this._changeIndexKey(doc))
+                }
+            });
+        });
+    }
+
+    flushAll() {
+        return new Promise((resolve, reject) => {
+            this.db.dropDatabase((err, data) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(data)
+                }
+            });
+        });
+    }
+
+    _changeIndexKey(data) {
+        const { _id, ...rest } = data;
+        return { id: _id, ...rest  };
+    }
+
+
+    searchByCase(schema, caseId) {
+        return new Promise((resolve, reject) => {
+            this.db.collection(schema).find({ $or: [{ caseId }, { caseId: undefined }] }).toArray((err, data) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(data.map(this._changeIndexKey))
+                }
+            });
+        });
+    }
+
+    deleteByCase(schema, caseId) {
+        return this.searchByCase(schema, caseId)
+            .then((response) => {
+                const ids = response
+                    .filter((layer) => layer.caseId === caseId)
+                    .map((layer) => layer.id);
+
+                return Promise.all(ids.map((id) => this.delete(schema, id))).then(() => ids);
+            });
+    }
 }
 
 module.exports = MongoDBBackend;
