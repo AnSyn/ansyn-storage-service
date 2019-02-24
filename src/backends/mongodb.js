@@ -21,7 +21,7 @@ class MongoDBBackend {
 
     create(schema, id, doc) {
         return new Promise((resolve, reject) => {
-            this.db.collection(schema).insertOne({ ...doc, _id: doc.id }, (err, data) => {
+            this.db.collection(schema).insertOne({ ...doc, _id: doc.preview.id }, (err, data) => {
                 if (err) {
                     reject(err)
                 } else {
