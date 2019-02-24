@@ -57,7 +57,7 @@ class MongoDBBackend {
 
     getPage(schema, offset = 0, size = 100) {
         return new Promise((resolve, reject) => {
-            this.db.collection(schema).find({}).project({ _id: 0, preview: 1 }).skip(+offset).limit(+size).toArray((err, data) => {
+            this.db.collection(schema).find({}).project({ _id: 0, preview: 1 }).sort({ 'preview.creationTime': -1 }).skip(+offset).limit(+size).toArray((err, data) => {
                 if (err) {
                     reject(err)
                 } else {
