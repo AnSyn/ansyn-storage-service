@@ -55,9 +55,20 @@ class MongoDBBackend {
         });
     }
 
-    getPage(schema, offset = 0, size = 100) {
+    getPage(schema, offset, size, role) {
+        let query = {};
+        if (schema.includes('cases')) {
+            switch (role) {
+                case 'GUEST':
+                case 'USER':
+                    query = { 'preview.role': role };
+                    break;
+                default:
+                    query = {}
+            }
+        }
         return new Promise((resolve, reject) => {
-            this.db.collection(schema).find({}).project({ _id: 0, preview: 1 }).sort({ 'preview.creationTime': -1 }).skip(+offset).limit(+size).toArray((err, data) => {
+            this.db.collection(schema).find(query).project({ _id: 0, preview: 1 }).sort({ 'preview.creationTime': -1 }).skip(+offset).limit(+size).toArray((err, data) => {
                 if (err) {
                     reject(err)
                 } else {
