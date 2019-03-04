@@ -30,8 +30,9 @@ class StoreRouter {
       const schema = req.params.schema;
       const from = req.query.from || '0';
       const size = req.query.limit || '10';
+      const role = req.query.role || 'GUEST';
 
-      this.backend.getPage(this._getPrefixedSchema(schema), from, size)
+      this.backend.getPage(this._getPrefixedSchema(schema), from, size, role)
         .then(data => res.json(data))
         .catch(err => this._handleError(err, res)
         );
