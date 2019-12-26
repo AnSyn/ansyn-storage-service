@@ -6,7 +6,7 @@ const config = require('../../config');
 class ElasticsearchBackend {
     constructor() {
         const hosts = config.backend.hosts.map(host => {
-            return { host: host, port: 9200, auth: config.backend.credentials };
+            return { host: host, port: config.backend.elasticport, auth: config.backend.credentials };
         });
 
         this.client = new elastic.Client({
