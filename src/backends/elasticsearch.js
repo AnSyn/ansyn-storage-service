@@ -109,10 +109,24 @@ class ElasticsearchBackend {
         });
     }
 
-   searchByCase(schema, caseId) {
-        return this.getPage(schema).then((response) => {
-            return response.filter((layer) => !layer.caseId || layer.caseId === caseId)
-        });
+   async searchByCase(schema, caseId) {
+        // search for all schema
+        let from = 0;
+        const size = 100;
+        const response = [];
+        let getAllSchema = false;
+        while(!getAllSchema) {
+            const tempResponse = await this.getPage(schema, from, size);
+            if(tempResponse.length === 0) {
+                getAllSchema = true;
+            }
+            else {
+                response.push(...tempResponse.filter( layer => !layer.caseId || layer.caseId === caseId));
+                from += tempResponse.length;
+            }
+        }
+
+        return response;
     }
 
     deleteByCase(schema, caseId) {

@@ -4,6 +4,7 @@ const express = require('express');
 const jsonUtils = require('../utils/jsonUtils');
 const storeRouter = require('./store');
 const config = require('../../config');
+const { version: appVersion } = require('../../package');
 
 class Controllers {
     constructor() {
@@ -15,7 +16,7 @@ class Controllers {
         this.router.use('/api/store', new storeRouter().getRouter());
 
         this.router.get('/', (req, res) => {
-            res.send(jsonUtils.prettyStringify({name: 'ansyn-storage-service', version: '0.8.0'}));
+            res.send(jsonUtils.prettyStringify({name: 'ansyn-storage-service', version: appVersion}));
         });
 
         this.router.get('/config', (req, res) => {

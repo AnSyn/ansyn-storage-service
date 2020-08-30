@@ -1,6 +1,6 @@
 {
   "name": "storage-service",
-  "version": "0.3.2",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -15,11 +15,12 @@
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "mongodb": "^3.1.13",
-    "elasticsearch": "^15.1.1",
+    "elasticsearch": "^16.7.1",
     "express": "^4.16.2"
   },
   "devDependencies": {
     "jasmine": "^3.0.0",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "nodemon": "^2.0.4"
   }
 }
