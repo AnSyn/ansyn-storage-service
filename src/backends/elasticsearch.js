@@ -92,7 +92,7 @@ class ElasticsearchBackend {
         });
     }
 
-    async delete(schema, id, user) {
+    async delete(schema, id, user = config.defaultUser) {
         const {body} = await this.getOneDocument(schema, id);
         if (body._source.owner === user) {
             return this.client.delete({
@@ -131,7 +131,7 @@ class ElasticsearchBackend {
         });
     }
 
-    async searchByCase(schema, caseId, user) {
+    async searchByCase(schema, caseId, user = config.defaultUser) {
         // search for all schema
         let from = 0;
         const size = 100;
@@ -150,7 +150,7 @@ class ElasticsearchBackend {
         return response;
     }
 
-    deleteByCase(schema, caseId, user) {
+    deleteByCase(schema, caseId, user = config.defaultUser) {
         return this.searchByCase(schema, caseId, user)
             .then((response) => {
                 const ids = response
