@@ -161,7 +161,7 @@ class ElasticsearchBackend {
             });
     }
 
-    getOneDocument(schema, id) {
+    async getOneDocument(schema, id) {
         return this.client.get({
             index: schema,
             type: schema,
