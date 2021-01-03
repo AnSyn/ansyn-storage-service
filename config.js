@@ -1,5 +1,6 @@
 const config = {
     port: process.env.PORT || 8080,
+    defaultUser: 'AnSyn',
     backend: {
         elasticport: process.env.ELASTIC_PORT || 9200,
         type: process.env.BACKEND_TYPE || 'elasticsearch',

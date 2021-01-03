@@ -12,11 +12,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@elastic/elasticsearch": "^7.10.0",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
-    "mongodb": "^3.1.13",
-    "elasticsearch": "^15.1.1",
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "mongodb": "^3.1.13"
   },
   "devDependencies": {
     "jasmine": "^3.0.0",
